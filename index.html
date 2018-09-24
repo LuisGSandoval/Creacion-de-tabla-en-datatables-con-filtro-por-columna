@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./datatables/datatables.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <title>Datatbles</title>
+    <meta name="author" content="Ivancho">
+    <meta name="description" content="Pàgina  probar datatables ">
+    <meta name="keywords" content="Datatables, pruebas, test, json,">
+</head>
+
+<body>
+    <div class="container mt-5">
+
+        <table id="clientsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <thead class="searchBar">
+                <tr>
+                    <th>name</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+        </table>
+
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <script src="./datatables/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let data = [
+
+                {
+                    "name": "Pomona",
+                    "telefono": 31215154
+                },
+                {
+                    "name": "Incauca",
+                    "telefono": 3775612154
+
+                },
+                {
+                    "name": "Cemex",
+                    "telefono": 312154
+
+                },
+                {
+                    "name": "Natural Feeling",
+                    "telefono": 316452154
+                }
+            ]
+
+            function Employee(name, telefono) {
+                this.name = name;
+                this.telefono = telefono;
+            };
+
+            let arrayFormateado = new Array();
+
+            data.map(info => arrayFormateado.push(new Employee(info.name, info.telefono)));
+
+
+            $('#clientsTable thead.searchBar tr th').each(function () {
+                var title = $('#clientsTable thead th').eq($(this).index()).text();
+                $(this).html('<input type="text" class="form-control" placeholder="Search' + title + '" />');
+            });
+
+            var dtable = $('#clientsTable').DataTable({
+                data: arrayFormateado,
+                columns: [
+                    { data: 'name' },
+                    { data: 'telefono' }
+                ],
+            });
+
+            // Apply the filter
+            dtable.columns().every(function () {
+                var column = this;
+
+                $('input', this.header()).on('keyup change', function () {
+                    column
+                        .search(this.value)
+                        .draw();
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>
